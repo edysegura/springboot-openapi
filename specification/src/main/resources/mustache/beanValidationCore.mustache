@@ -24,4 +24,4 @@ Not Integer, not Long => we have a decimal value!
 }}{{^isInteger}}{{^isLong}}{{#minimum}}@DecimalMin({{#exclusiveMinimum}}value={{/exclusiveMinimum}}"{{minimum}}"{{#exclusiveMinimum}},inclusive=false{{/exclusiveMinimum}}){{/minimum}}{{#maximum}} @DecimalMax({{#exclusiveMaximum}}value={{/exclusiveMaximum}}"{{maximum}}"{{#exclusiveMaximum}},inclusive=false{{/exclusiveMaximum}}) {{/maximum}}{{/isLong}}{{/isInteger}}{{!
 Custom Validation!
 }}
-{{#performBeanValidation}}{{#isValidValues}}@io.reflectoring.customvalidation.ValidValues{{/isValidValues}}{{/performBeanValidation}}
+{{#vendorExtensions.x-validValues}}@io.reflectoring.customvalidation.ValidValues{{/vendorExtensions.x-validValues}}

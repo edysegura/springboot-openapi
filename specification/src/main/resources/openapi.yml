@@ -144,7 +144,8 @@ components:
           format: email
         password:
           type: string
-          format: validValues
+          description: Version 3
+          x-validValues: true
         phone:
           type: string
         userStatus:

@@ -4,10 +4,10 @@ import java.io.IOException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -19,6 +19,7 @@ import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
 @Component
+@WebFilter("/users")
 public class AuditLogFilter extends OncePerRequestFilter {
 
   @Autowired
@@ -37,10 +38,12 @@ public class AuditLogFilter extends OncePerRequestFilter {
     System.out.println("--->" + requestWrapper.getRequestURI());
     System.out.println("--->" + responseBody);
 
-    ObjectNode responseJson = (ObjectNode) objectMapper.readTree(responseBody);
-    // ObjectNode password = (ObjectNode) responseJson.get("password");
-    responseJson.put("password", "****");
-    System.out.println(responseJson.get("password"));
+    if(!responseBody.equals("")) {
+      ObjectNode responseJson = (ObjectNode) objectMapper.readTree(responseBody);
+      // ObjectNode password = (ObjectNode) responseJson.get("password");
+      // responseJson.put("password", "****");
+      System.out.println(responseJson.get("password"));
+    }
 
     responseWrapper.copyBodyToResponse();
   }

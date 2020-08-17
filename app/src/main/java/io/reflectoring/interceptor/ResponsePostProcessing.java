@@ -1,5 +1,8 @@
 package io.reflectoring.interceptor;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 @RestControllerAdvice
 public class ResponsePostProcessing implements ResponseBodyAdvice<Object> {
 
+  @Autowired
+  private ObjectMapper objectMapper;
+
   @Override
   public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
     return returnType.getParameterType().equals(ResponseEntity.class);
@@ -21,8 +27,18 @@ public class ResponsePostProcessing implements ResponseBodyAdvice<Object> {
   public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType,
       Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request,
       ServerHttpResponse response) {
-    
-    return "{\"result\":0}";
+
+    Object processedBody = body;
+    try {
+      String textJson = objectMapper.writeValueAsString(body);
+      System.out.println("JSON: " + textJson);
+      processedBody = objectMapper.readTree("{\"result\":0}");
+    } catch (Exception e) {
+      System.out.println("Error: " + e.getMessage());
+    }
+
+    return processedBody;
   }
 
 }
+

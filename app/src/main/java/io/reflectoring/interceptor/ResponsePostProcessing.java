@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
@@ -32,7 +33,7 @@ public class ResponsePostProcessing implements ResponseBodyAdvice<Object> {
     try {
       String textJson = objectMapper.writeValueAsString(body);
       System.out.println("JSON: " + textJson);
-      processedBody = objectMapper.readTree("{\"result\":0}");
+      processedBody = objectMapper.readTree(ResourceUtils.getFile("classpath:users.json"));
     } catch (Exception e) {
       System.out.println("Error: " + e.getMessage());
     }
@@ -41,4 +42,3 @@ public class ResponsePostProcessing implements ResponseBodyAdvice<Object> {
   }
 
 }
-

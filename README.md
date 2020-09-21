@@ -1,4 +1,4 @@
-# API First with Open API Specs 
+# API First with Open API Specs
 
 Example using Open API Specs with Swagger and Spring Boot
 
